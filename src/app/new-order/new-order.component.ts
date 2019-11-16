@@ -73,8 +73,8 @@ export class NewOrderComponent implements OnInit {
     }, err => {});
 
     this.pubnub.getMessage("chan-2", function (msg) {
-      //console.log("RBPI:", msg);
-      let id = msg.message
+      console.log("Su orden ha sido actualizada");
+      //let id = msg.message
       //console.log("id a actualizar: ", id);
       /* this.orderService.updateOrder(id, "1").subscribe( data => {
         if (data["code"] == "200")
@@ -182,7 +182,7 @@ export class NewOrderComponent implements OnInit {
                   form.reset();
                   
                   alert("Orden generada correctamente:");
-                  this.orderService.updateOrder(this.id, "1").subscribe( data => {
+                  /* this.orderService.updateOrder(this.id, "1").subscribe( data => {
                     if (data["code"] == "200")
                     {
                       if(data["changedRows"] == 1)
@@ -198,7 +198,7 @@ export class NewOrderComponent implements OnInit {
                     {
                       console.log("orden no se pudo actualizar");
                     }
-                  }, err => {});
+                  }, err => {}); */
                 }, err => {
                   alert(err);
               } );
