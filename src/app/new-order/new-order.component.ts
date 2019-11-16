@@ -182,7 +182,7 @@ export class NewOrderComponent implements OnInit {
                   form.reset();
                   
                   alert("Orden generada correctamente:");
-                  /* this.orderService.updateOrder(this.id, "1").subscribe( data => {
+                  this.orderService.updateOrder(this.id, "1").subscribe( data => {
                     if (data["code"] == "200")
                     {
                       if(data["changedRows"] == 1)
@@ -198,7 +198,7 @@ export class NewOrderComponent implements OnInit {
                     {
                       console.log("orden no se pudo actualizar");
                     }
-                  }, err => {}); */
+                  }, err => {});
                 }, err => {
                   alert(err);
               } );
