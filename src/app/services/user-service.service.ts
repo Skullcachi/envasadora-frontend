@@ -5,8 +5,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { User } from '../user';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-/* const apiURL = 'http://http://ec2-18-219-165-244.us-east-2.compute.amazonaws.com:3000/api/'; */
-const apiURL = 'http://localhost:3000/api/';
+const apiURL = 'http://ec2-18-222-171-178.us-east-2.compute.amazonaws.com:3000/api/';
+/* const apiURL = 'http://localhost:3000/api/'; */
 const httpOptions = {
   headers: new HttpHeaders({
     'Access-Control-Allow-Origin': '*',
