@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import { Order } from '../order';
+import { User } from '../user';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 /* const apiURL = 'http://http://ec2-18-219-165-244.us-east-2.compute.amazonaws.com:3000/api/'; */
@@ -17,55 +17,16 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+@Injectable({
+  providedIn: 'root'
+})
+export class UserServiceService {
+
   constructor(private http: HttpClient) { }
 
-  getOrders(){
-    return this.http.get(apiURL + "getOrders", httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  getFlavours(){
-    return this.http.get(apiURL + "getFlavours", httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  getOrderTypes(){
-    return this.http.get(apiURL + "getOrderTypes", httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  getOrderStatus(id){
-    return this.http.get(apiURL + "getOrderStatus/" + id, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  getLastOrder(){
-    return this.http.get(apiURL + "getLastOrder/", httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  newOrder(order: Order) {
-    console.log(order);
-    return this.http.post(apiURL + "newOrder", order, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  updateOrder(id, status)
-  {
-    return this.http.post(apiURL + "updateOrder", {"id": id, "status": status}, httpOptions)
+  login(user: User) {
+    console.log(user);
+    return this.http.post(apiURL + "login", user, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
@@ -88,5 +49,4 @@ export class OrderService {
 		/* return throwError('Something bad happened; please try again later.'); */
 		return throwError(error.error.error);
 	};
-
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Order } from "../order";
 import { OrderService } from '../services/order.service';
 import { PubNubAngular } from 'pubnub-angular2';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-order',
@@ -16,8 +17,12 @@ export class NewOrderComponent implements OnInit {
   pubnub: PubNubAngular;
   channel: string;
   channel2: string;
+  isLogged: boolean = false;
+  isAdmin: boolean = false;
   model = new Order(this.sizes[0], this.flavours[0]);;
   constructor(private orderService:OrderService,
+    private route: ActivatedRoute,
+    private router: Router,
     pubnub: PubNubAngular) { 
       
       this.channel = 'chan-1';
@@ -38,6 +43,22 @@ export class NewOrderComponent implements OnInit {
     }
 
   ngOnInit() {
+    if (localStorage.getItem("tipoUsuario") != null)
+    {
+      if(localStorage.getItem("tipoUsuario") == "0")
+      {
+        this.isLogged = true;
+      }
+      else if (localStorage.getItem("tipoUsuario") == "1")
+      {
+        this.isLogged = true;
+        this.isAdmin = true;
+      }
+    }
+    else{      
+      this.isLogged = false;
+      this.router.navigate(["/login"]);
+    }
     this.orderService.getOrderTypes().subscribe(data => {
       console.log(data["data"]);
       this.sizes = [];
@@ -72,11 +93,11 @@ export class NewOrderComponent implements OnInit {
       }
     }, err => {});
 
-    this.pubnub.getMessage("chan-2", function (msg) {
-      console.log("Su orden ha sido actualizada");
-      //let id = msg.message
-      //console.log("id a actualizar: ", id);
-      /* this.orderService.updateOrder(id, "1").subscribe( data => {
+    this.pubnub.getMessage("chan-2", (msg) => {
+      console.log("Actualizando orden");
+      let id = msg.message
+      console.log("id a actualizar: ", id);
+      this.orderService.updateOrder(id, "1").subscribe( data => {
         if (data["code"] == "200")
         {
           if(data["changedRows"] == 1)
@@ -92,7 +113,7 @@ export class NewOrderComponent implements OnInit {
         {
           console.log("orden no se pudo actualizar");
         }
-      }, err => {}); */
+      }, err => {});
     });
   }
 
@@ -131,7 +152,7 @@ export class NewOrderComponent implements OnInit {
             form.reset();
             
             alert("Orden generada correctamente:");
-            this.orderService.updateOrder(this.id, "1").subscribe( data => {
+            /* this.orderService.updateOrder(this.id, "1").subscribe( data => {
               if (data["code"] == "200")
               {
                 if(data["changedRows"] == 1)
@@ -147,7 +168,7 @@ export class NewOrderComponent implements OnInit {
               {
                 console.log("orden no se pudo actualizar");
               }
-            }, err => {});
+            }, err => {}); */
           }, err => {
             alert(err);
         } );
@@ -182,7 +203,7 @@ export class NewOrderComponent implements OnInit {
                   form.reset();
                   
                   alert("Orden generada correctamente:");
-                  this.orderService.updateOrder(this.id, "1").subscribe( data => {
+                  /* this.orderService.updateOrder(this.id, "1").subscribe( data => {
                     if (data["code"] == "200")
                     {
                       if(data["changedRows"] == 1)
@@ -198,7 +219,7 @@ export class NewOrderComponent implements OnInit {
                     {
                       console.log("orden no se pudo actualizar");
                     }
-                  }, err => {});
+                  }, err => {}); */
                 }, err => {
                   alert(err);
               } );
@@ -213,4 +234,10 @@ export class NewOrderComponent implements OnInit {
     }
   }
 
+  
+  logOut()
+  {
+    localStorage.clear();
+    this.router.navigate(["/login"]);
+  }
 }
